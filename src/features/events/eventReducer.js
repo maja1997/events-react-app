@@ -1,5 +1,4 @@
 import { sampleData } from "../../app/api/sampleData";
-import { CommentAction } from "semantic-ui-react";
 import { CREATE_EVENT, UPDATE_EVENT, DELETE_EVENT } from "./eventConstants";
 
 const initialState = {
