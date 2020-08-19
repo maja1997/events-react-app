@@ -1,5 +1,6 @@
 import React from 'react';
 import EventListItem from './EventListItem';
+import {useSelector} from 'react-redux';
 
 export default function EventList({events}){
   return (
