@@ -1,6 +1,8 @@
 import { SIGN_IN_USER, SIGN_OUT_USER } from "./authConstants";
 import firebase from '../../app/config/firebase'
 import { APP_LOADED } from "../../app/async/asyncReducer";
+import { getUserProfile, dataFromSnaphot } from "../../app/firestore/firestoreService";
+import { listenToCurrentUserProfile } from "../profiles/profileActions";
 
 export function signInUser(user) {
   return {
@@ -13,8 +15,12 @@ export function verifyAuth() {
   return function (dispatch) {
     return firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        dispatch(signInUser(user))
-        dispatch({type: APP_LOADED})
+        dispatch(signInUser(user));
+        const profileRef = getUserProfile(user.uid);
+        profileRef.onSnapshot(snapshot => {
+          dispatch(listenToCurrentUserProfile(dataFromSnaphot(snapshot)));
+          dispatch({type: APP_LOADED})
+        })
       } else {
         dispatch(signOutUser())
         dispatch({type: APP_LOADED})
